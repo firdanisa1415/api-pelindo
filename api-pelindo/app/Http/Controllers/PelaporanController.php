@@ -31,7 +31,10 @@ class PelaporanController extends Controller
             $data = Pelaporan::where('id', $report->id)->first();
             return response()->json($data, 200);
         } catch (\Throwable $th) {
-            return response()->json($data, 500);
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal Menambahkan Pelaporan',
+            ], 500);
         }
 
 
