@@ -9,7 +9,8 @@ class Pelaporan extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['judul_laporan','isi_laporan','harapan','product','jenis_pelaporan','status','lampiran'];
+    protected $fillable = ['judul_laporan','isi_laporan',
+    'harapan','product','jenis_pelaporan','status','lampiran'];
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:m:s',

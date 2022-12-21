@@ -24,17 +24,6 @@ class PelaporanController extends Controller
 
     public function store(Request $request)
     {
-        //validate data
-        $request->validate =  ([
-            'judul_laporan'=> 'required', 
-            'isi_laporan'=> 'required',
-            'harapan' => 'required',
-            'product'=> 'required',
-            'jenis_pelaporan' => 'required',
-            'status' => 'required',
-            'lampiran' => 'required'
-        ]);
-        
         Pelaporan::create($request->all());
         
        return redirect()->route('pelaporan.index')
@@ -54,17 +43,6 @@ class PelaporanController extends Controller
 
     public function update(Request $request, Pelaporan $pelaporan)
     {
-        //validate data
-        $request->validate =  ([
-            'judul_laporan'=> 'required', 
-            'isi_laporan'=> 'required',
-            'harapan' => 'required',
-            'product'=> 'required',
-            'jenis_pelaporan' => 'required',
-            'status' => 'required',
-            'lampiran' => 'required'
-        ]);
-
         $pelaporan->update($request->all());
     
         return redirect()->route('pelaporan.index')

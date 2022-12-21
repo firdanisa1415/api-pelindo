@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PelaporanController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -17,8 +17,4 @@ use App\Http\Controllers\PelaporanController;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/pelaporan',[PelaporanController::class, 'index']);
-Route::post('/pelaporan/store', [PelaporanController::class,'store']);
-Route::get('/pelaporan/{id?}', [PelaporanController::class,'{id?}']);
-Route::post('/pelaporan/update/{id?}', [PelaporanController::class,'update']);
-Route::delete('/pelaporan/{id?}', 'PostsController@destroy');
+
