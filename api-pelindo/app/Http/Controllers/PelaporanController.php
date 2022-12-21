@@ -28,7 +28,7 @@ class PelaporanController extends Controller
         //Todo: Add try catch block
         try {
             $report = Pelaporan::create($request->all());
-            $data = User::where('id', $report->id)->first();
+            $data = Pelaporan::where('id', $report->id)->first();
             return response()->json($data, 200);
         } catch (\Throwable $th) {
             return response()->json($data, 500);
