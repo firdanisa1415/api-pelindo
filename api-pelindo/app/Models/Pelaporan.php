@@ -9,12 +9,20 @@ class Pelaporan extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['judul_laporan','isi_laporan',
-    'harapan','product','jenis_pelaporan','status','lampiran'];
+    protected $table = 'data_pelaporans';
+    protected $fillable = ['id_pelaporan', 'judul_pelaporan', 'isi_pelaporan', 'jenis_product', 'lampiran', 'harapan', 'status', 'tanggal_masuk', 'tanggal_selesai'];
+
+    const CREATED_AT = 'tanggal_mulai';
+    const UPDATED_AT = 'tanggal_selesai';
 
     protected $casts = [
-        'created_at' => 'datetime:Y-m-d H:m:s',
-        'updated_at' => 'datetime:Y-m-d H:m:s'
+        'tanggal_mulai' => 'datetime:Y-m-d H:m:s',
+        'tanggal_selesai' => 'datetime:Y-m-d H:m:s',
     ];
+
+    public $incrementing = false;
+
+    protected $primaryKey = 'id_pelaporan';
+    // protected $keyType = 'string';
 
 }
