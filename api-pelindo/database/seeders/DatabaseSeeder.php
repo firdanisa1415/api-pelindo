@@ -4,6 +4,7 @@ namespace Database\Seeders;
 // use Haruncpi\LaravelIdGenerator\IdGenerator;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Database\Seeders\RolesSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -27,5 +28,6 @@ class DatabaseSeeder extends Seeder
             'tanggal_selesai' => "test",
             'jenis_product' => "test",
         ]);
+        $this->call(RolesSeeder::class);
     }
 }
