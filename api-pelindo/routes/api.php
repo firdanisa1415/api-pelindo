@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\PelaporanController;
 use App\Http\Controllers\EpicsController;
 use App\Http\Controllers\SprintController;
@@ -19,8 +20,12 @@ use App\Http\Controllers\TugasController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+
+
+Route::controller(AuthenticationController::class)->group(function () {
+    Route::post('auth', 'register');
+    Route::post('auth', 'login');
+    Route::post('auth', 'logout');
 });
 
 Route::controller(PelaporanController::class)->group(function () {
@@ -61,4 +66,8 @@ Route::controller(SprintController::class)->group(function () {
     Route::get('sprint/{id}', 'show');
     Route::put('sprint/{id}', 'update');
     Route::delete('sprint/{id}', 'destroy');
+});
+
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
 });
