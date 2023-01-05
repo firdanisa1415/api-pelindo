@@ -25,7 +25,6 @@ use App\Http\Controllers\TugasController;
 Route::controller(AuthenticationController::class)->group(function () {
     Route::post('register', 'register');
     Route::post('login', 'login');
-    Route::post('logout', 'logout');
 });
 
 Route::controller(PelaporanController::class)->group(function () {
@@ -68,6 +67,9 @@ Route::controller(SprintController::class)->group(function () {
     Route::delete('sprint/{id}', 'destroy');
 });
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    Route::group(['middleware' => ['auth:sanctum']], function () {
+        Route::controller(AuthenticationController::class)->group(function () {
+            Route::post('logout', 'logout');
+        });
 });
