@@ -14,20 +14,21 @@ return new class extends Migration
     public function up()
     {
         Schema::create('data_pelaporans', function (Blueprint $table) {
-            // $table->string('id', 100);
-            $table->string('id_pelaporan', 100)->primary();
+            $table->id();
+            $table->string('id_pelaporan');
             // $table->foreignId('id_user')->constrained('courses')->onDelete('cascade');
-            $table->string('judul_pelaporan', 250);
-            $table->string('isi_pelaporan', 500);
-            $table->string('harapan', 500);
-            $table->string('jenis_product', 50);
+            $table->string('judul_pelaporan');
+            $table->string('isi_pelaporan');
+            $table->string('harapan');
+            $table->string('jenis_product');
             // $table->enum('jenis_pelaporan', ['incident', 'RFC']);
             // $table->foreignId('id_operator')->constrained('pic')->onDelete('cascade');
-            $table->enum('status', ['Open', 'In Progress', 'Review', 'Done']);
+            // $table->enum('status', ['Open', 'In Progress', 'Review', 'Done']);
+            $table->string("status");
             $table->string('lampiran');
-            $table->timestamp('tanggal_mulai')->useCurrent();
-            $table->timestamp('tanggal_selesai')->useCurrent();
-            // $table->timestamp('tanggal_selesai');
+            $table->string('tanggal_mulai');
+            $table->string('tanggal_selesai');
+            $table->timestamps();
         });
     }
 
