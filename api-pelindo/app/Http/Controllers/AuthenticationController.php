@@ -16,7 +16,12 @@ class AuthenticationController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::all();
+        return response()
+            ->json([
+                'status' => 'Success',
+                'data' => $users,
+            ], 200);
     }
 
     public function register(Request $request)
