@@ -21,11 +21,16 @@ use App\Http\Controllers\TugasController;
 */
 
 
-
 Route::controller(AuthenticationController::class)->group(function () {
     Route::post('register', 'register');
     Route::post('login', 'login');
 });
+
+// Route::controller(AuthenticationController::class)->group(function () {
+//     Route::post('auth', 'register');
+//     Route::post('auth', 'login');
+//     Route::post('auth', 'logout');
+// });
 
 Route::controller(PelaporanController::class)->group(function () {
     Route::get('pelaporan', 'index');
@@ -67,9 +72,14 @@ Route::controller(SprintController::class)->group(function () {
     Route::delete('sprint/{id}', 'destroy');
 });
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    Route::group(['middleware' => ['auth:sanctum']], function () {
+
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::controller(AuthenticationController::class)->group(function () {
+        Route::post('logout', 'logout');
+    });
+    Route::group(['middleware' => ['role:operator|manager']], function () {
         Route::controller(AuthenticationController::class)->group(function () {
-            Route::post('logout', 'logout');
+            Route::get('user', 'index');
         });
+    });
 });
