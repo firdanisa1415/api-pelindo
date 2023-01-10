@@ -47,10 +47,13 @@ class AuthenticationController extends Controller
         /**
          * @enum karyawan | operator | manager
          */
-        $user->assignRole('karyawan');
+        
         if (!empty($input['role'])) {
             $user->assignRole($input['role']);
+        }else{
+            $user->assignRole('karyawan');
         }
+
         $token = $user->createToken('token')->plainTextToken;
         $data = [
             'user' => User::where('id', $user->id)->with('roles')->first(),
@@ -86,12 +89,8 @@ class AuthenticationController extends Controller
 
     public function logout(Request $request)
     {
-        auth()->user()->tokens()->delete();
-        $data = [
-            'status' => "success",
-            "message" => "Logout Successful",
-        ];
-        return $this->responseSuccess('Registration Successful', $data, 200);
+        $request->user()->currentAccessToken()->delete();
+        return $this->responseSuccess('Logout Successfuly!', null , 200);
     }
 
     /**
