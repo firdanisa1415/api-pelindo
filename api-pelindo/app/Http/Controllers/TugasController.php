@@ -11,7 +11,7 @@ class TugasController extends Controller
 {
     public function index()
     {
-        $data_tugas = Tugas::all();
+        $data_tugas = Tugas::with('story')->get();
         return response()
             ->json([
                 'status' => 'Success',

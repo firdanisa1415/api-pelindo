@@ -28,6 +28,6 @@ class Sprint extends Model
     
     public function stories()
     {
-        return $this->hasMany(Data_Story::class, 'sprint_id');
+        return $this->hasMany(Story::class, 'sprint_id');
     }
 }

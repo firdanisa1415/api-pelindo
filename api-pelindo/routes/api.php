@@ -23,9 +23,9 @@ use App\Http\Controllers\TugasController;
 
 
 Route::controller(AuthenticationController::class)->group(function () {
-    Route::post('auth', 'register');
-    Route::post('auth', 'login');
-    Route::post('auth', 'logout');
+    Route::get('user', 'index');
+    Route::post('register', 'register');
+    Route::post('login', 'login');
 });
 
 Route::controller(PelaporanController::class)->group(function () {
