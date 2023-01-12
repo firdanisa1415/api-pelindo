@@ -80,13 +80,13 @@ class PelaporanController extends Controller
 
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), [
-            // 'id_pelaporan'      => 'string|max:255',
-            // 'no_ticket'      => 'string',
+        $pelaporan = Pelaporan::where('id_pelaporan', $id)->first();
+        $input = $request->all();
+        if (!$pelaporan) return $this->responseFailed('Data not found', '', 404);
+        $validator = Validator::make($input, [
             'judul_pelaporan'      => 'string',
             'isi_pelaporan'      => 'string',
             'jenis_product'      => 'string',
-            // 'jenis_pelaporan'    => 'string',
             'harapan'      => 'string',
             'status'     => 'string',
             'lampiran'  => 'string'
@@ -95,38 +95,16 @@ class PelaporanController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors());
         }
-
-        $data_pelaporan = Pelaporan::find($id);
-        if (!$data_pelaporan) {
-            return response()->json([
-                'status' => 'Error',
-                'message' => 'Data not found!'
-            ], 404);
-        };
-
-        $data_pelaporan->fill($request->all());
-        $data_pelaporan->save();
-        return response()->json([
-            'status' => 'Success',
-            'data' => $data_pelaporan,
-        ], 200);
+        $pelaporan->update($input);
+        $data = Pelaporan::where('id_pelaporan', $id)->first();
+        return $this->responseSuccess('Pelaporan has been updated', $data, 200);
     }
 
     public function destroy($id)
     {
-        $data_pelaporan = Pelaporan::find($id);
-        if (!$data_pelaporan) {
-            return response()->json([
-                'status' => 'Error',
-                'message' => 'Data not found!'
-            ], 404);
-        };
-
-        $data_pelaporan->delete();
-
-        return response()->json([
-            'status' => 'Success',
-            'message' => 'Data deleted'
-        ]);
+        $pelaporan = Pelaporan::where('id_pelaporan', $id)->first();
+        if (!$pelaporan) return $this->responseFailed('Data not found', '', 404);
+        $pelaporan->delete();
+        return $this->responseSuccess('Data has been deleted');
     }
 }
