@@ -24,6 +24,7 @@ class EpicsController extends Controller
         $validator = Validator::make($request->all(), [
             'judul_epic'      => 'required|string',
             'isi_epic'      => 'required|string',
+            'harapan' => 'required|string', 
             'status'      => 'required|string',
         ]);
 
@@ -37,6 +38,7 @@ class EpicsController extends Controller
         $data_epics->id_epic = $kode_id;
         $data_epics->judul_epic = $request->judul_epic;
         $data_epics->isi_epic = $request->isi_epic;
+        $data_epics->harapan = $request->harapan;
         $data_epics->status = $request->status;
         
         $data_epics->save();
@@ -72,6 +74,7 @@ class EpicsController extends Controller
         $validator = Validator::make($request->all(), [
             'judul_epic'      => 'string',
             'isi_epic'      => 'string',
+            'harapan' => 'string',
             'status'      => 'string',
         ]);
 

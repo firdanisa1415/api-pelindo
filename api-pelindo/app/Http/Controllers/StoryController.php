@@ -28,6 +28,7 @@ class StoryController extends Controller
             'epic_id'      => 'required|string',
             'sprint_id'      => 'required|string',
             'isi_story'      => 'required|string',
+            'status'        => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -58,6 +59,7 @@ class StoryController extends Controller
         $data_story->epic_id = $request->epic_id;
         $data_story->sprint_id = $request->sprint_id;
         $data_story->isi_story = $request->isi_story;
+        $data_story->status = $request->status;
         $data_story->save();
 
         return response()
@@ -91,6 +93,7 @@ class StoryController extends Controller
             'epic_id'      => 'string',
             'sprint_id'      => 'string',
             'isi_story'      => 'string',
+            'status'        => 'string',
         ]);
 
         if ($validator->fails()) {

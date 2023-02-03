@@ -14,7 +14,7 @@ class Story extends Model
     public $timestamps = false;
     protected $keyType = 'string';
 
-    protected $fillable = ['id_story', 'epic_id', 'sprint_id','isi_story'];
+    protected $fillable = ['id_story', 'epic_id', 'sprint_id','isi_story', 'status'];
 
     public function epic(){
         return $this->belongsTo(Epics::class,'epic_id', 'id_epic');

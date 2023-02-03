@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('id_epic')->primary();
             $table->string('judul_epic');
             $table->string('isi_epic');
+            $table->string('harapan');
             $table->string('status');
             $table->timestamp('tanggal_mulai')->useCurrent();
             $table->date('tanggal_selesai')->nullable();
