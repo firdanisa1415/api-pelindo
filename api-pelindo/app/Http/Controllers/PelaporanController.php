@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Pelaporan;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
-// use Haruncpi\LaravelIdGenerator\IdGenerator;
+use Haruncpi\LaravelIdGenerator\IdGenerator;
 // use Illuminate\Support\Str;
 
 // use sirajcse\UniqueIdGenerator\UniqueIdGenerator;
@@ -39,9 +39,10 @@ class PelaporanController extends Controller
         }
         $current = Carbon::now()->toDateTimeString();
         $trialExpires = Carbon::now()->addDays('3');
-        //Pastikan semua Import Library kayak IdGenerator atau Str itu sudah dipanggil di paling atas kode yang "use <nama-library", Otherwise bakal error 500;
+        
+        $kode_id = IdGenerator::generate(['table' => 'data_pelaporans', 'field' => 'id_pelaporan', 'length' => 10, 'prefix' => 'BUG-']);
         $newPelaporan = Pelaporan::create([
-            'id_pelaporan' => "ID" . "-" . uniqid(),
+            'id_pelaporan' => $kode_id,
             'judul_pelaporan' => $input['judul_pelaporan'],
             'isi_pelaporan' => $input['isi_pelaporan'],
             'harapan' => $input['harapan'],
@@ -79,7 +80,10 @@ class PelaporanController extends Controller
     }
 
     public function update(Request $request, $id)
-    {
+    {   
+        $pelaporan = Pelaporan::where('id_pelaporan', $id)->first();
+        $input = $request->all();
+        if (!$pelaporan) return $this->responseFailed('Data not found', '', 404);
         $validator = Validator::make($request->all(), [
             // 'id_pelaporan'      => 'string|max:255',
             // 'no_ticket'      => 'string',
@@ -96,37 +100,16 @@ class PelaporanController extends Controller
             return response()->json($validator->errors());
         }
 
-        $data_pelaporan = Pelaporan::find($id);
-        if (!$data_pelaporan) {
-            return response()->json([
-                'status' => 'Error',
-                'message' => 'Data not found!'
-            ], 404);
-        };
-
-        $data_pelaporan->fill($request->all());
-        $data_pelaporan->save();
-        return response()->json([
-            'status' => 'Success',
-            'data' => $data_pelaporan,
-        ], 200);
+        $pelaporan->update($input);
+        $data = Pelaporan::where('id_pelaporan', $id)->first();
+        return $this->responseSuccess('Pelaporan has been updated', $data, 200);
     }
 
     public function destroy($id)
     {
-        $data_pelaporan = Pelaporan::find($id);
-        if (!$data_pelaporan) {
-            return response()->json([
-                'status' => 'Error',
-                'message' => 'Data not found!'
-            ], 404);
-        };
-
-        $data_pelaporan->delete();
-
-        return response()->json([
-            'status' => 'Success',
-            'message' => 'Data deleted'
-        ]);
+        $pelaporan = Pelaporan::where('id_pelaporan', $id)->first();
+        if (!$pelaporan) return $this->responseFailed('Data not found', '', 404);
+        $pelaporan->delete();
+        return $this->responseSuccess('Data has been deleted');
     }
 }
