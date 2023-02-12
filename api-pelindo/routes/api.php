@@ -22,6 +22,7 @@ use App\Http\Controllers\TugasController;
 
 
 Route::controller(AuthenticationController::class)->group(function () {
+    Route::get('getUser', 'index');
     Route::post('register', 'register');
     Route::post('login', 'login');
 });

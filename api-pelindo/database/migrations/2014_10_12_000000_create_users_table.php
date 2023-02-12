@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('nama_karyawan');
             $table->integer('nrp');
             $table->string('divisi');
+            $table->integer('role_id')->default("1")->nullable();
             $table->string('email')->unique();
             $table->string('password');
             $table->rememberToken();

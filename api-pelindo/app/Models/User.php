@@ -21,6 +21,7 @@ class User extends Authenticatable
         'nama_karyawan',
         'nrp',
         'divisi',
+        'role_id',
         'email',
         'password',
     ];
