@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('data_tugas', function (Blueprint $table) {
             $table->id('id_tugas');
-            $table->string('story_id')->unsigned();
+            $table->string('story_id');
             $table->string('isi_tugas');
 
             $table->foreign('story_id')->references('id_story')->on('data_story')->onDelete('cascade');

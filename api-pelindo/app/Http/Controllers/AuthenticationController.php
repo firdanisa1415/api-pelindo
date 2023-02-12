@@ -46,15 +46,16 @@ class AuthenticationController extends Controller
             'email' => $input['email'],
             'nrp' => $input['nrp'],
             'divisi' => $input['divisi'],
+            'role_id' => $input['role_id'] ?? 1,
             'password' => bcrypt($input['password']),
         ]);
         /**
          * @enum karyawan | operator | manager
          */
-        
-        if (!empty($input['role'])) {
-            $user->assignRole($input['role']);
-        }else{
+
+        if (!empty($input['role_id'])) {
+            $user->assignRole($input['role_id']);
+        } else {
             $user->assignRole('karyawan');
         }
 
@@ -69,7 +70,7 @@ class AuthenticationController extends Controller
 
     public function login(Request $request)
     {
-        $input = $request->only('nrp','password');
+        $input = $request->only('nrp', 'password');
         if (!Auth::attempt($input)) {
             return $this->responseFailed('Unauthorized', '', 401);
         }
@@ -91,7 +92,7 @@ class AuthenticationController extends Controller
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
-        return $this->responseSuccess('Logout Successfuly!', null , 200);
+        return $this->responseSuccess('Logout Successfuly!', null, 200);
     }
 
     /**
