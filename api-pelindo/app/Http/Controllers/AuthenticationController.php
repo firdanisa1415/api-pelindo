@@ -14,9 +14,34 @@ class AuthenticationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::all();
+        // $users = User::all();
+        // return response()
+        //     ->json([
+        //         'status' => 'Success',
+        //         'data' => $users,
+        //     ], 200);
+        // Get all query parameters
+        $queryParams = $request->query();
+
+        // Create a query builder object
+        $query = User::query()->with('roles');
+
+        $fillable = User::first()->getFillable();
+
+        // Loop through all query parameters
+        foreach ($queryParams as $key => $value) {
+            // If the key exists in the fillable property, add a where clause to the query
+            if (in_array($key, $fillable)) {
+                $query->where($key, $value);
+            }
+        }
+
+        // Get the filtered users
+        $users = $query->get();
+
+        // Return the filtered users as JSON
         return response()
             ->json([
                 'status' => 'Success',
@@ -74,7 +99,6 @@ class AuthenticationController extends Controller
         if (!Auth::attempt($input)) {
             return $this->responseFailed('Unauthorized', '', 401);
         }
-
         try {
             $user = User::where('nrp', $input['nrp'])->with('roles')->first();
             $token = $user->createToken('token')->plainTextToken;
