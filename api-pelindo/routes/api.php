@@ -33,8 +33,6 @@ Route::controller(AuthenticationController::class)->group(function () {
 //     Route::post('auth', 'logout');
 // });
 
-
-
 Route::controller(EpicsController::class)->group(function () {
     Route::get('epic', 'index');
     Route::post('epic', 'store');
@@ -65,6 +63,14 @@ Route::controller(SprintController::class)->group(function () {
     Route::get('sprint/{id}', 'show');
     Route::put('sprint/{id}', 'update');
     Route::delete('sprint/{id}', 'destroy');
+});
+
+Route::controller(PelaporanController::class)->group(function () {
+    Route::get('pelaporan', 'index');
+    Route::post('pelaporan', 'store');
+    Route::get('pelaporan/{id}', 'show');
+    Route::put('pelaporan/{id}', 'update');
+    Route::delete('pelaporan/{id}', 'destroy');
 });
 
 
