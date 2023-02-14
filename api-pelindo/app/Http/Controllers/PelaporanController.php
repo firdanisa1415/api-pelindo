@@ -80,17 +80,14 @@ class PelaporanController extends Controller
     }
 
     public function update(Request $request, $id)
-    {   
+    {
         $pelaporan = Pelaporan::where('id_pelaporan', $id)->first();
         $input = $request->all();
         if (!$pelaporan) return $this->responseFailed('Data not found', '', 404);
-        $validator = Validator::make($request->all(), [
-            // 'id_pelaporan'      => 'string|max:255',
-            // 'no_ticket'      => 'string',
+        $validator = Validator::make($input, [
             'judul_pelaporan'      => 'string',
             'isi_pelaporan'      => 'string',
             'jenis_product'      => 'string',
-            // 'jenis_pelaporan'    => 'string',
             'harapan'      => 'string',
             'status'     => 'string',
             'lampiran'  => 'string'
@@ -99,7 +96,6 @@ class PelaporanController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors());
         }
-
         $pelaporan->update($input);
         $data = Pelaporan::where('id_pelaporan', $id)->first();
         return $this->responseSuccess('Pelaporan has been updated', $data, 200);
