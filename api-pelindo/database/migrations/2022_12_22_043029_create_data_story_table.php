@@ -15,14 +15,14 @@ return new class extends Migration
     {
         Schema::create('data_story', function (Blueprint $table) {
             $table->string('id_story', 100)->primary();
-            $table->string('epic_id')->unsigned();
-            $table->string('sprint_id')->unsigned();
+            $table->string('epic_id');
+            $table->string('sprint_id');
             $table->string('isi_story');
+            $table->string('status');
 
             $table->foreign('epic_id')->references('id_epic')->on('data_epics')->onDelete('cascade');
             $table->foreign('sprint_id')->references('id_sprint')->on('data_sprint')->onDelete('cascade');
         });
-
     }
 
     /**

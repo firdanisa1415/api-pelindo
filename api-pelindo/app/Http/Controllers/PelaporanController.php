@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Pelaporan;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
-// use Haruncpi\LaravelIdGenerator\IdGenerator;
+use Haruncpi\LaravelIdGenerator\IdGenerator;
 // use Illuminate\Support\Str;
 
 // use sirajcse\UniqueIdGenerator\UniqueIdGenerator;
@@ -39,9 +39,10 @@ class PelaporanController extends Controller
         }
         $current = Carbon::now()->toDateTimeString();
         $trialExpires = Carbon::now()->addDays('3');
-        //Pastikan semua Import Library kayak IdGenerator atau Str itu sudah dipanggil di paling atas kode yang "use <nama-library", Otherwise bakal error 500;
+        
+        $kode_id = IdGenerator::generate(['table' => 'data_pelaporans', 'field' => 'id_pelaporan', 'length' => 10, 'prefix' => 'BUG-']);
         $newPelaporan = Pelaporan::create([
-            'id_pelaporan' => "ID" . "-" . uniqid(),
+            'id_pelaporan' => $kode_id,
             'judul_pelaporan' => $input['judul_pelaporan'],
             'isi_pelaporan' => $input['isi_pelaporan'],
             'harapan' => $input['harapan'],

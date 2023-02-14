@@ -16,7 +16,7 @@ class AuthenticationController extends Controller
      */
     public function index()
     {
-        $users = User::with('roles')->get();
+        $users = User::all();
         return response()
             ->json([
                 'status' => 'Success',
@@ -28,7 +28,9 @@ class AuthenticationController extends Controller
     {
         $input = $request->all();
         $validator = Validator::make($input, [
-            'name' => 'required|string|unique:users,name|alpha_dash',
+            'nama_karyawan' => 'required|string|unique:users,nama_karyawan|alpha_dash',
+            'nrp' => 'required|integer',
+            'divisi' => 'required|string',
             'email' => 'required|string|unique:users,email',
             'password' => 'required|string|confirmed',
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
@@ -40,17 +42,20 @@ class AuthenticationController extends Controller
         }
 
         $user = User::create([
-            'name' => $input['name'],
+            'nama_karyawan' => $input['nama_karyawan'],
             'email' => $input['email'],
+            'nrp' => $input['nrp'],
+            'divisi' => $input['divisi'],
+            'role_id' => $input['role_id'] ?? 1,
             'password' => bcrypt($input['password']),
         ]);
         /**
          * @enum karyawan | operator | manager
          */
-        
-        if (!empty($input['role'])) {
-            $user->assignRole($input['role']);
-        }else{
+
+        if (!empty($input['role_id'])) {
+            $user->assignRole($input['role_id']);
+        } else {
             $user->assignRole('karyawan');
         }
 
@@ -65,16 +70,13 @@ class AuthenticationController extends Controller
 
     public function login(Request $request)
     {
-        $input = $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string|min:8|max:255'
-        ]);
+        $input = $request->only('nrp', 'password');
         if (!Auth::attempt($input)) {
             return $this->responseFailed('Unauthorized', '', 401);
         }
 
         try {
-            $user = User::where('email', $input['email'])->with('roles')->first();
+            $user = User::where('nrp', $input['nrp'])->with('roles')->first();
             $token = $user->createToken('token')->plainTextToken;
             $data = [
                 'user' => $user,
@@ -90,7 +92,7 @@ class AuthenticationController extends Controller
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
-        return $this->responseSuccess('Logout Successfuly!', null , 200);
+        return $this->responseSuccess('Logout Successfuly!', null, 200);
     }
 
     /**

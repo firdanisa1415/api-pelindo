@@ -9,13 +9,14 @@ class Epics extends Model
 {
     use HasFactory;
     protected $table = 'data_epics';
-    protected $fillable = ['id_epic', 'judul_epic', 'isi_epic', 'status', 'tanggal_mulai', 'tanggal_selesai'];
+    protected $fillable = ['id_epic', 'judul_epic', 'isi_epic', 'harapan','status', 'tanggal_mulai', 'tanggal_selesai'];
 
     const CREATED_AT = 'tanggal_mulai';
     const UPDATED_AT = NULL;
 
     protected $casts = [
         'tanggal_mulai' => 'datetime:Y-m-d H:m:s',
+        'tanggal_selesai' => 'datetime:Y-m-d H:m:s',
     ];
 
 
