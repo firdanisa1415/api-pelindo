@@ -22,7 +22,7 @@ use App\Http\Controllers\TugasController;
 
 
 Route::controller(AuthenticationController::class)->group(function () {
-    Route::get('getUser', 'index');
+    Route::get('user', 'index');
     Route::post('register', 'register');
     Route::post('login', 'login');
 });
@@ -33,13 +33,7 @@ Route::controller(AuthenticationController::class)->group(function () {
 //     Route::post('auth', 'logout');
 // });
 
-Route::controller(PelaporanController::class)->group(function () {
-    Route::get('pelaporan', 'index');
-    Route::post('pelaporan', 'store');
-    Route::get('pelaporan/{id}', 'show');
-    Route::put('pelaporan/{id}', 'update');
-    Route::delete('pelaporan/{id}', 'destroy');
-});
+
 
 Route::controller(EpicsController::class)->group(function () {
     Route::get('epic', 'index');
@@ -76,11 +70,19 @@ Route::controller(SprintController::class)->group(function () {
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::controller(AuthenticationController::class)->group(function () {
+        Route::get('user', 'index');
         Route::post('logout', 'logout');
+    });
+    Route::controller(PelaporanController::class)->group(function () {
+        Route::get('pelaporan', 'index');
+        Route::post('pelaporan', 'store');
+        Route::get('pelaporan/{id}', 'show');
+        Route::put('pelaporan/{id}', 'update');
+        Route::delete('pelaporan/{id}', 'destroy');
     });
     Route::group(['middleware' => ['role:operator|manager']], function () {
         Route::controller(AuthenticationController::class)->group(function () {
-            Route::get('user', 'index');
+            // Route::get('user', 'index');
         });
     });
 });
