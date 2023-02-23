@@ -14,7 +14,7 @@ class StoryController extends Controller
 {
     public function index()
     {
-        $data_story = Story::with('sprint')->get();
+        $data_story = Story::with('sprint', 'epic')->get();
         return response()
             ->json([
                 'status' => 'Success',

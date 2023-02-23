@@ -15,6 +15,7 @@ class Pelaporan extends Model
         'judul_pelaporan',
         'isi_pelaporan',
         'jenis_product',
+        'pic_pelaporan',
         'lampiran',
         'harapan',
         'status',
