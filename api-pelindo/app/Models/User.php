@@ -17,10 +17,12 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [
+    protected $table = 'users';
+
+     protected $fillable = [
         'nama_karyawan',
         'nrp',
-        'divisi',
+        'divisi_id',
         'role_id',
         'email',
         'password',
@@ -46,4 +48,7 @@ class User extends Authenticatable
      *
      * @var array<string, string>
      */
+    public function divisi(){
+        return $this->belongsTo(Divisi::class,'divisi_id','id');
+    }
 }

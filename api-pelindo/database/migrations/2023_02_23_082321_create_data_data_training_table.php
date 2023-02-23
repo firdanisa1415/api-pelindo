@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('data_pelaporans', function (Blueprint $table) {
+        Schema::create('data_data_training', function (Blueprint $table) {
             $table->id('id');
             $table->string('id_pelaporan');
             // $table->foreignId('id_user')->constrained('courses')->onDelete('cascade');
@@ -40,6 +40,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('data_pelaporans');
+        Schema::dropIfExists('data_data_training');
     }
 };

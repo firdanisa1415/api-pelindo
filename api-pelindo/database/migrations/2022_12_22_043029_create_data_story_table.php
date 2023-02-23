@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('sprint_id');
             $table->string('isi_story');
             $table->string('status');
-
             $table->foreign('epic_id')->references('id_epic')->on('data_epics')->onDelete('cascade');
             $table->foreign('sprint_id')->references('id_sprint')->on('data_sprint')->onDelete('cascade');
         });
