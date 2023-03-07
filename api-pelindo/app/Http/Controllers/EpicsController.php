@@ -12,7 +12,7 @@ class EpicsController extends Controller
 {
     public function index()
     {
-        $user = Auth::user(); 
+        $user = Auth::user();
         $data_epics = Epics::where('user_id', $user->id)->with('stories')->get();
         return response()
             ->json([
@@ -26,7 +26,7 @@ class EpicsController extends Controller
         $validator = Validator::make($request->all(), [
             'judul_epic'      => 'required|string',
             'isi_epic'      => 'required|string',
-            'harapan' => 'required|string', 
+            'harapan' => 'required|string',
             'status'      => 'required|string',
         ]);
 
@@ -35,7 +35,7 @@ class EpicsController extends Controller
         }
 
         $kode_id = IdGenerator::generate(['table' => 'data_epics', 'field' => 'id_epic', 'length' => 10, 'prefix' => 'EPC-']);
-        $user = Auth::user(); 
+        $user = Auth::user();
         $data_epics = new Epics();
         $data_epics->id_epic = $kode_id;
         $data_epics->user_id = $user->id;
@@ -43,7 +43,7 @@ class EpicsController extends Controller
         $data_epics->isi_epic = $request->isi_epic;
         $data_epics->harapan = $request->harapan;
         $data_epics->status = $request->status;
-        
+
         $data_epics->save();
 
         return response()
@@ -55,8 +55,7 @@ class EpicsController extends Controller
 
     public function show($id)
     {
-        // dd(Data_Pelaporan::find($id));
-        $data_epic = Epics::find($id);
+        $data_epic = Epics::find($id)->with('stories')->get();;
         if (!$data_epic) {
             return response()
                 ->json([
