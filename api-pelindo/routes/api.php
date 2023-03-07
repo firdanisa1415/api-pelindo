@@ -116,7 +116,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::put('epic/{id}', 'update');
         Route::delete('epic/{id}', 'destroy');
     });
-    
+
     Route::controller(StoryController::class)->group(function () {
         Route::get('story', 'index');
         Route::post('story/{epic_id}', 'store');
@@ -124,7 +124,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::put('story/{id}', 'update');
         Route::delete('story/{id}', 'destroy');
     });
-    
+
     Route::controller(TugasController::class)->group(function () {
         Route::get('tugas', 'index');
         Route::post('tugas', 'store');
@@ -132,7 +132,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::put('tugas/{id}', 'update');
         Route::delete('tugas/{id}', 'destroy');
     });
-    
+
     Route::controller(SprintController::class)->group(function () {
         Route::get('sprint', 'index');
         Route::post('sprint', 'store');
@@ -148,6 +148,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('role','roles');
         });
 
-       
+
     });
 });

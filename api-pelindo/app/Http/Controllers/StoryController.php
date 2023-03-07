@@ -23,7 +23,7 @@ class StoryController extends Controller
             ], 200);
     }
 
-    public function store(Request $request, Epics $epic_id)
+    public function store(Request $request, $epic_id)
     {
         $validator = Validator::make($request->all(), [
             'sprint_id'      => 'required|string',
@@ -44,8 +44,8 @@ class StoryController extends Controller
                 'message' => 'Data sprint not found!'
             ], 404);
         };
-        
-        $epic = Epics::findOrFail($epic_id);
+
+        $epic = Epics::where('id_epic', $epic_id)->first();
         $data_story = new Story();
         $data_story->id_story = $kode_id;
         $data_story->epic_id = $epic->id_epic;
@@ -58,7 +58,7 @@ class StoryController extends Controller
             ->json([
                 'status' => 'Success',
                 'data' => $data_story,
-            ], 200);
+            ], 201);
     }
 
     public function show($id)
