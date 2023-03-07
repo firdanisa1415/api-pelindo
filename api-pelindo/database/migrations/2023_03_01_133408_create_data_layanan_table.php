@@ -13,11 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('data_sprint', function (Blueprint $table) {
-            $table->string('id_sprint', 100)->primary();
-            $table->string('nama_sprint');
-            $table->timestamp('tanggal_mulai')->useCurrent();
-            $table->timestamp('tanggal_akhir')->useCurrent();
+        Schema::create('data_layanan', function (Blueprint $table) {
+            $table->id('id');
+            $table->string('nama_layanan');
+            $table->timestamps();
         });
     }
 
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('data_sprint');
+        Schema::dropIfExists('data_layanan');
     }
 };

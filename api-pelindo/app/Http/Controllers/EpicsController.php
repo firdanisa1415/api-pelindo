@@ -6,12 +6,14 @@ use Illuminate\Http\Request;
 use App\Models\Epics;
 use Illuminate\Support\Facades\Validator;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
+use Illuminate\Support\Facades\Auth;
 
 class EpicsController extends Controller
 {
     public function index()
     {
-        $data_epics = Epics::with('stories')->get();
+        $user = Auth::user(); 
+        $data_epics = Epics::where('user_id', $user->id)->with('stories')->get();
         return response()
             ->json([
                 'status' => 'Success',
@@ -33,9 +35,10 @@ class EpicsController extends Controller
         }
 
         $kode_id = IdGenerator::generate(['table' => 'data_epics', 'field' => 'id_epic', 'length' => 10, 'prefix' => 'EPC-']);
-
+        $user = Auth::user(); 
         $data_epics = new Epics();
         $data_epics->id_epic = $kode_id;
+        $data_epics->user_id = $user->id;
         $data_epics->judul_epic = $request->judul_epic;
         $data_epics->isi_epic = $request->isi_epic;
         $data_epics->harapan = $request->harapan;

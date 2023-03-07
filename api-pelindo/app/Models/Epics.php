@@ -9,7 +9,7 @@ class Epics extends Model
 {
     use HasFactory;
     protected $table = 'data_epics';
-    protected $fillable = ['id_epic', 'judul_epic', 'isi_epic', 'harapan','status', 'tanggal_mulai', 'tanggal_selesai'];
+    protected $fillable = ['id_epic', 'user_id', 'judul_epic', 'isi_epic', 'harapan','status', 'tanggal_mulai', 'tanggal_selesai'];
 
     const CREATED_AT = 'tanggal_mulai';
     const UPDATED_AT = NULL;
@@ -27,5 +27,8 @@ class Epics extends Model
 
     public function stories(){
         return $this->hasMany(Story::class, 'epic_id');
+    }
+    public function user(){
+        return $this->belongsTo(User::class,'user_id','id');
     }
 }

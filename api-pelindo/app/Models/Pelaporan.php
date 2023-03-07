@@ -12,9 +12,11 @@ class Pelaporan extends Model
     protected $table = 'data_pelaporans';
     protected $fillable = [
         'id_pelaporan',
+        'user_id',
         'judul_pelaporan',
         'isi_pelaporan',
         'jenis_product',
+        'pic_pelaporan',
         'lampiran',
         'harapan',
         'status',
@@ -34,5 +36,8 @@ class Pelaporan extends Model
 
     // protected $primaryKey = 'id_pelaporan';
     // protected $keyType = 'string';
-
+    
+    public function user(){
+        return $this->belongsTo(User::class,'user_id','id');
+    }
 }

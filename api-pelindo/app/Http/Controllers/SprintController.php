@@ -36,6 +36,7 @@ class SprintController extends Controller
 
         $data_sprint = new Sprint();
         $data_sprint->id_sprint = $kode_id;
+        $data_sprint->nama_sprint = $request->nama_sprint;
         $data_sprint->tanggal_mulai = $current;
         $data_sprint->tanggal_akhir = $trialExpires;
         $data_sprint->save();
@@ -68,6 +69,7 @@ class SprintController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
+            'nama_sprint'      => 'string',
         ]);
 
         if ($validator->fails()) {

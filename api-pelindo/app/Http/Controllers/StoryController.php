@@ -12,9 +12,10 @@ use Haruncpi\LaravelIdGenerator\IdGenerator;
 
 class StoryController extends Controller
 {
-    public function index()
+    public function index($epic_id)
     {
-        $data_story = Story::with('sprint')->get();
+        $epic = Epics::findOrFail($epic_id);
+        $data_story = Story::where('epic_id', $epic)->get();
         return response()
             ->json([
                 'status' => 'Success',
@@ -22,10 +23,9 @@ class StoryController extends Controller
             ], 200);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, Epics $epic_id)
     {
         $validator = Validator::make($request->all(), [
-            'epic_id'      => 'required|string',
             'sprint_id'      => 'required|string',
             'isi_story'      => 'required|string',
             'status'        => 'required|string',
@@ -36,15 +36,6 @@ class StoryController extends Controller
         }
 
         $kode_id = IdGenerator::generate(['table' => 'data_story', 'field' => 'id_story', 'length' => 10, 'prefix' => 'STR-']);
-
-        $epicId = $request->input('epic_id');
-        $dataEpic = Epics::find($epicId);
-        if (!$dataEpic) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Data epic not found!'
-            ], 404);
-        };
         $sprintId = $request->input('sprint_id');
         $dataSprint = Sprint::find($sprintId);
         if (!$dataSprint) {
@@ -53,10 +44,11 @@ class StoryController extends Controller
                 'message' => 'Data sprint not found!'
             ], 404);
         };
-
+        
+        $epic = Epics::findOrFail($epic_id);
         $data_story = new Story();
         $data_story->id_story = $kode_id;
-        $data_story->epic_id = $request->epic_id;
+        $data_story->epic_id = $epic->id_epic;
         $data_story->sprint_id = $request->sprint_id;
         $data_story->isi_story = $request->isi_story;
         $data_story->status = $request->status;
