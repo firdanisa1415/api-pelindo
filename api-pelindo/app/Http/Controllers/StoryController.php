@@ -22,7 +22,21 @@ class StoryController extends Controller
             ], 200);
     }
 
+<<<<<<< Updated upstream
     public function store(Request $request)
+=======
+    public function dataStories()
+    {
+        $data_story = Story::with('sprint', 'epic')->get();
+        return response()
+            ->json([
+                'status' => 'Success',
+                'data' => $data_story,
+            ], 200);
+    }
+
+    public function store(Request $request, $epic_id)
+>>>>>>> Stashed changes
     {
         $validator = Validator::make($request->all(), [
             'epic_id'      => 'required|string',

@@ -73,6 +73,21 @@ Route::controller(PelaporanController::class)->group(function () {
     Route::delete('pelaporan/{id}', 'destroy');
 });
 
+<<<<<<< Updated upstream
+=======
+Route::controller(TrainingController::class)->group(function () {
+    Route::get('training', 'index');
+    Route::post('klasifikasi', 'klasifikasiNaiveBayes');
+    Route::post('training', 'store');
+    Route::get('training/{id}', 'show');
+    Route::put('training/{id}', 'update');
+    Route::delete('training/{id}', 'destroy');
+});
+
+Route::controller(GuestController::class)->group(function(){
+    Route::post('send-email', 'sendEmail');
+});
+>>>>>>> Stashed changes
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::controller(AuthenticationController::class)->group(function () {
@@ -82,10 +97,47 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::controller(PelaporanController::class)->group(function () {
         Route::get('pelaporan', 'index');
         Route::post('pelaporan', 'store');
+        Route::post('prediksi', 'klasifikasiNaiveBayes');
         Route::get('pelaporan/{id}', 'show');
         Route::put('pelaporan/{id}', 'update');
         Route::delete('pelaporan/{id}', 'destroy');
     });
+<<<<<<< Updated upstream
+=======
+    Route::controller(EpicsController::class)->group(function () {
+        Route::get('epic', 'index');
+        Route::post('epic', 'store');
+        Route::get('epic/{id}', 'show');
+        Route::put('epic/{id}', 'update');
+        Route::delete('epic/{id}', 'destroy');
+    });
+
+    Route::controller(StoryController::class)->group(function () {
+        Route::get('story', 'index');
+        Route::get('stories', 'dataStories');
+        Route::post('story/{epic_id}', 'store');
+        Route::get('story/{id}', 'show');
+        Route::put('story/{id}', 'update');
+        Route::delete('story/{id}', 'destroy');
+    });
+
+    Route::controller(TugasController::class)->group(function () {
+        Route::get('tugas', 'index');
+        Route::post('tugas', 'store');
+        Route::get('tugas/{id}', 'show');
+        Route::put('tugas/{id}', 'update');
+        Route::delete('tugas/{id}', 'destroy');
+    });
+
+    Route::controller(SprintController::class)->group(function () {
+        Route::get('sprint', 'index');
+        Route::post('sprint', 'store');
+        Route::get('sprint/{id}', 'show');
+        Route::put('sprint/{id}', 'update');
+        Route::delete('sprint/{id}', 'destroy');
+    });
+
+>>>>>>> Stashed changes
     Route::group(['middleware' => ['role:operator|manager']], function () {
         Route::controller(AuthenticationController::class)->group(function () {
             // Route::get('user', 'index');

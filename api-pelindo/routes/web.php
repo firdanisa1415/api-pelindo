@@ -18,3 +18,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+<<<<<<< Updated upstream
+=======
+// Route::post('/prediksi-sentimen', 'TrainingController@klasifikasiNaiveBayes')->name('prediksi.sentimen');
+// Route::post('/send-email', 'EmailController@sendEmail');
+
+>>>>>>> Stashed changes

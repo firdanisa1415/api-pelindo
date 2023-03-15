@@ -15,6 +15,11 @@ class Pelaporan extends Model
         'judul_pelaporan',
         'isi_pelaporan',
         'jenis_product',
+<<<<<<< Updated upstream
+=======
+        'class',
+        'pic_pelaporan',
+>>>>>>> Stashed changes
         'lampiran',
         'harapan',
         'status',
