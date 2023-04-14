@@ -17,12 +17,13 @@ return new class extends Migration
             $table->id();
             $table->string('nama_karyawan');
             $table->string('nrp');
-            $table->string('divisi');
+            $table->integer('divisi_id');
             $table->integer('role_id')->default("1")->nullable();
             $table->string('email')->unique();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+            $table->foreign('divisi_id')->references('id')->on('data_divisi')->onDelete('cascade');
         });
     }
 

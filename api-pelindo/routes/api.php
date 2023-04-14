@@ -8,6 +8,9 @@ use App\Http\Controllers\EpicsController;
 use App\Http\Controllers\SprintController;
 use App\Http\Controllers\StoryController;
 use App\Http\Controllers\TugasController;
+use App\Http\Controllers\DivisiController;
+use App\Http\Controllers\GuestController;
+use App\Http\Controllers\TrainingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,8 +28,17 @@ Route::controller(AuthenticationController::class)->group(function () {
     Route::get('user', 'index');
     Route::post('register', 'register');
     Route::post('login', 'login');
-});
+    Route::get('role','roles');
+    Route::get('operator', 'getListOperator');
+    Route::delete('users/{id}', 'destroy');
+    });
 
+Route::controller(DivisiController::class)->group(function(){
+    Route::get('divisi', 'index');
+    Route::post('divisi', 'store');
+    Route::get('divisi/{id}', 'show');
+}
+);
 // Route::controller(AuthenticationController::class)->group(function () {
 //     Route::post('auth', 'register');
 //     Route::post('auth', 'login');
@@ -73,6 +85,17 @@ Route::controller(PelaporanController::class)->group(function () {
     Route::delete('pelaporan/{id}', 'destroy');
 });
 
+Route::controller(TrainingController::class)->group(function () {
+    Route::get('training', 'index');
+    Route::post('training', 'store');
+    Route::get('training/{id}', 'show');
+    Route::put('training/{id}', 'update');
+    Route::delete('training/{id}', 'destroy');
+});
+
+Route::controller(GuestController::class)->group(function(){
+    Route::post('send-email', 'sendEmail');
+});
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::controller(AuthenticationController::class)->group(function () {
@@ -122,6 +145,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::group(['middleware' => ['role:operator|manager']], function () {
         Route::controller(AuthenticationController::class)->group(function () {
             // Route::get('user', 'index');
+        Route::get('user', 'index');
+        Route::post('logout', 'logout');
+        Route::get('role','roles');
         });
 
         Route::controller(PelaporanController::class)->group(function () {

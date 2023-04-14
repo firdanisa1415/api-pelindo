@@ -48,7 +48,7 @@ class StoryController extends Controller
         $epic = Epics::where('id_epic', $epic_id)->first();
         $data_story = new Story();
         $data_story->id_story = $kode_id;
-        $data_story->epic_id = $request->epic_id;
+        $data_story->epic_id = $epic->id_epic;
         $data_story->sprint_id = $request->sprint_id;
         $data_story->isi_story = $request->isi_story;
         $data_story->status = $request->status;
@@ -58,7 +58,7 @@ class StoryController extends Controller
             ->json([
                 'status' => 'Success',
                 'data' => $data_story,
-            ], 200);
+            ], 201);
     }
 
     public function show($id)

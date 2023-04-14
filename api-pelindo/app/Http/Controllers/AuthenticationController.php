@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Role;
+use App\Models\Divisi;
 
 class AuthenticationController extends Controller
 {
@@ -26,7 +28,7 @@ class AuthenticationController extends Controller
         $queryParams = $request->query();
 
         // Create a query builder object
-        $query = User::query()->with('roles');
+        $query = User::query()->with('roles','divisi');
 
         $fillable = User::first()->getFillable();
 
@@ -49,13 +51,23 @@ class AuthenticationController extends Controller
             ], 200);
     }
 
+    public function getListOperator()
+    {
+        $users = User::where('role_id', '=', 2)->get();
+        return response()
+            ->json([
+                'status' => 'Success',
+                'data' => $users,
+            ], 200);
+    }
+
     public function register(Request $request)
     {
         $input = $request->all();
         $validator = Validator::make($input, [
-            'nama_karyawan' => 'required|string|unique:users,nama_karyawan|alpha_dash',
+            'nama_karyawan' => 'required|string|unique:users,nama_karyawan',
             'nrp' => 'required|integer',
-            'divisi' => 'required|string',
+            'divisi_id' => 'required|string',
             'email' => 'required|string|unique:users,email',
             'password' => 'required|string|confirmed',
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
@@ -65,12 +77,20 @@ class AuthenticationController extends Controller
         if ($validator->fails()) {
             return $this->responseFailed('Error Validation', $validator->errors(), 400);
         }
+        $divisiId = $request->input('divisi_id');
+        $user = Divisi::find($divisiId);
+        if (!$user) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Data Divisi not found!'
+            ], 404);
+        };
 
         $user = User::create([
             'nama_karyawan' => $input['nama_karyawan'],
             'email' => $input['email'],
             'nrp' => $input['nrp'],
-            'divisi' => $input['divisi'],
+            'divisi_id' => $input['divisi_id'],
             'role_id' => $input['role_id'] ?? 1,
             'password' => bcrypt($input['password']),
         ]);
@@ -117,6 +137,16 @@ class AuthenticationController extends Controller
     {
         $request->user()->currentAccessToken()->delete();
         return $this->responseSuccess('Logout Successfuly!', null, 200);
+    }
+
+    public function roles()
+    {
+        $users_role = Role::all();
+        return response()
+            ->json([
+                'status' => 'Success',
+                'data' => $users_role,
+            ], 200);
     }
 
     /**
@@ -204,8 +234,23 @@ class AuthenticationController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy($id)
     {
-        //
+        $user = User::find($id);
+        if (!$user) {
+            return response()
+                ->json([
+                    'status' => 'Error',
+                    'message' => 'Data Not Found!',
+                ], 404);
+        }
+
+        $user->delete();
+
+        return response()
+            ->json([
+                'status' => 'Success',
+                'data' => $user,
+            ], 200);
     }
 }

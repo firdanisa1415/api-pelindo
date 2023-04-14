@@ -15,7 +15,7 @@ class SendMail extends Mailable
 
     public $newPelaporan;
     public $user;
-   
+
     public function __construct($newPelaporan, $user)
     {
         $this->newPelaporan = $newPelaporan;
@@ -61,6 +61,6 @@ class SendMail extends Mailable
      */
     public function attachments()
     {
-        return [];
-    }
+        return [];
+    }
 }

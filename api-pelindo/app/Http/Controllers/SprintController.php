@@ -72,6 +72,7 @@ class SprintController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
+            'nama_sprint'      => 'string',
         ]);
 
         if ($validator->fails()) {

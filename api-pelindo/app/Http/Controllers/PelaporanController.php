@@ -18,7 +18,8 @@ class PelaporanController extends Controller
 {
     public function index()
     {
-        $data_pelaporans = Pelaporan::all();
+        $user = Auth::user();
+        $data_pelaporans = Pelaporan::where('user_id', $user->id)->with('user')->get();
         return response()
             ->json([
                 'status' => 'Success',
@@ -37,7 +38,7 @@ class PelaporanController extends Controller
         'status' => 'required|string',
         // 'klasifikasi' => 'string',
         'nama_pic' => 'required|string',
-        
+
     ]);
 
     if ($validatedData->fails()) {
@@ -61,10 +62,10 @@ class PelaporanController extends Controller
 
     // $picPelaporan = '';
 
-    // if ($output === 'Software') { 
+    // if ($output === 'Software') {
     //     $reportCountPic1 = Pelaporan::where('pic_pelaporan', '=', 1)->count();
     //     $reportCountPic2 = Pelaporan::where('pic_pelaporan', '=', 2)->count();
-    
+
     // if ($reportCountPic1 < $reportCountPic2) {
     //     $picPelaporan = 1;
     // } else {
@@ -73,7 +74,7 @@ class PelaporanController extends Controller
     // }
     // elseif ($output === 'Hardware') {
     //     $picPelaporan = 3;
-    // }    
+    // }
 
     $current = Carbon::now()->toDateTimeString();
     $trialExpires = Carbon::now()->addDays('3');
@@ -131,9 +132,10 @@ return response()
             'judul_pelaporan'      => 'string',
             'isi_pelaporan'      => 'string',
             'jenis_product'      => 'string',
+            'pic_pelaporan' => 'string',
             'harapan'      => 'string',
             'status'     => 'string',
-            'lampiran'  => 'string'
+            // 'lampiran'  => 'string'
         ]);
 
         if ($validator->fails()) {
