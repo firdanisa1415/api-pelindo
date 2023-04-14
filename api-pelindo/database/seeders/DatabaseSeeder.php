@@ -6,6 +6,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Database\Seeders\RolesSeeder;
 use Database\Seeders\UsersSeeder;
+use Database\Seeders\DivisiSeeder;
+use Database\Seeders\LayananSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -30,6 +32,8 @@ class DatabaseSeeder extends Seeder
         //     'jenis_product' => "test",
         // ]);
         $this->call(RolesSeeder::class);
+        $this->call(DivisiSeeder::class);
         $this->call(UsersSeeder::class);
+        $this->call(LayananSeeder::class);
     }
 }
