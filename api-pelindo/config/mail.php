@@ -34,16 +34,16 @@ return [
     */
 
     'mailers' => [
+        'driver' => env('MAIL_DRIVER', 'smtp'),
         'smtp' => [
             'transport' => 'smtp',
-            'driver' => env('MAIL_DRIVER', 'smtp'),
             'encryption' => env('MAIL_ENCRYPTION', 'tls'),
             'auth' => true,
             'secure' => 'tls',
             'host' => env('MAIL_HOST', 'smtp.office365.com'),
             'port' => env('MAIL_PORT', 587),
-            'username' => 'firdanisa1415@outlook.com',
-            'password' => 'firda1415',
+            'username' => 'arya.anuraga@outlook.com',
+            'password' => 'glodakOutlook17',
         ],
 
         'ses' => [
@@ -93,8 +93,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'firdanisa1415@outlook.com'),
-        'name' => env('MAIL_FROM_NAME', 'Firda'),
+        'address' => env('MAIL_FROM_ADDRESS', 'arya.anuraga@outlook.com'),
+        'name' => env('MAIL_FROM_NAME', 'Helpdesk-IT'),
     ],
 
     /*

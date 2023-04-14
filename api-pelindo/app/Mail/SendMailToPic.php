@@ -9,25 +9,25 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class SendMail extends Mailable
+class SendMailToPic extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $newPelaporan;
-    public $user;
-   
-    public function __construct($newPelaporan, $user)
+    public $picPelaporan;
+
+    public function __construct($newPelaporan, $picPelaporan)
     {
         $this->newPelaporan = $newPelaporan;
-        $this->user = $user;
+        $this->picPelaporan = $picPelaporan;
     }
 
     public function build()
     {
         return $this->subject('Email dari aplikasi')
-        ->view('emails.sendEMail')
+        ->view('emails.picEmail')
         ->with('newPelaporan', $this->newPelaporan)
-        ->envelope(new Envelope($this->newPelaporan['id_pelaporan'].' - Data Terkirim'));
+        ->envelope(new Envelope($this->newPelaporan['id_pelaporan'].' - Penugasan Baru'));
     }
 
     /**
@@ -38,7 +38,7 @@ class SendMail extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: $this->newPelaporan['id_pelaporan'].' - Data Terkirim',
+            subject: $this->newPelaporan['id_pelaporan'].' - Penugasan Baru',
         );
     }
 

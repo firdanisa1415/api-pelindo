@@ -58,4 +58,7 @@ class User extends Authenticatable
     public function epics(){
         return $this->hasMany(Epics::class,'user_id');
     }
+    public function sprint(){
+        return $this->hasMany(Sprint::class,'user_id');
+    }
 }

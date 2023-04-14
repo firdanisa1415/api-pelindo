@@ -101,6 +101,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::controller(AuthenticationController::class)->group(function () {
         Route::get('user', 'index');
         Route::post('logout', 'logout');
+        Route::put('user/{id}', 'update');
     });
     Route::controller(PelaporanController::class)->group(function () {
         Route::get('pelaporan', 'index');
@@ -118,7 +119,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     });
 
     Route::controller(StoryController::class)->group(function () {
-        Route::get('story', 'index');
+        Route::get('story/epic/{epic_id}', 'index');
+        Route::get('stories', 'allStory');
         Route::post('story/{epic_id}', 'store');
         Route::get('story/{id}', 'show');
         Route::put('story/{id}', 'update');
@@ -148,6 +150,37 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('role','roles');
         });
 
+        Route::controller(PelaporanController::class)->group(function () {
+        Route::get('pelaporan', 'index');
+        Route::post('pelaporan', 'store');
+        Route::get('pelaporan/{id}', 'show');
+        Route::put('pelaporan/{id}', 'update');
+        Route::delete('pelaporan/{id}', 'destroy');
+    });
 
+    });
+    Route::group(['middleware' => ['role:karyawan']], function () {
+        Route::controller(AuthenticationController::class)->group(function () {
+            // Route::get('user', 'index');
+        Route::get('user', 'index');
+        Route::post('logout', 'logout');
+        Route::get('role','roles');
+        });
+
+        Route::controller(PelaporanController::class)->group(function () {
+        Route::get('pelaporan', 'index');
+        Route::post('pelaporan', 'store');
+        Route::get('pelaporan/{id}', 'show');
+        Route::put('pelaporan/{id}', 'update');
+        Route::delete('pelaporan/{id}', 'destroy');
+        });
+
+        Route::controller(TugasController::class)->group(function () {
+        Route::get('tugas', 'index');
+        Route::post('tugas', 'store');
+        Route::get('tugas/{id}', 'show');
+        Route::put('tugas/{id}', 'update');
+        Route::delete('tugas/{id}', 'destroy');
+        });
     });
 });

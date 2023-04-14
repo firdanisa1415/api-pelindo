@@ -2,32 +2,43 @@
 
 namespace App\Mail;
 
+use App\Models\Pelaporan;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
-// use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class SendMail extends Mailable
+class PelaporanUpdated extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $newPelaporan;
-    public $user;
-   
-    public function __construct($newPelaporan, $user)
+    /**
+     * Create a new message instance.
+     *
+     * @return void
+     */
+
+    public $data;
+    public $picPelaporan;
+    
+    public function __construct(Pelaporan $data,User $picPelaporan)
     {
-        $this->newPelaporan = $newPelaporan;
-        $this->user = $user;
+        $this->data = $data;
+        $this->picPelaporan = $picPelaporan;
     }
 
     public function build()
     {
-        return $this->subject('Email dari aplikasi')
-        ->view('emails.sendEMail')
-        ->with('newPelaporan', $this->newPelaporan)
-        ->envelope(new Envelope($this->newPelaporan['id_pelaporan'].' - Data Terkirim'));
+        return $this->view('emails.pelaporanUpdate')
+                    ->subject('Pelaporan has been updated')
+                    ->with([
+                        'data' => $this->data,
+                        'picPelaporan' => $this->picPelaporan
+                    ])
+                    ->envelope(new Envelope($this->data['id_pelaporan'].' - Data Updated'));
     }
 
     /**
@@ -38,7 +49,7 @@ class SendMail extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: $this->newPelaporan['id_pelaporan'].' - Data Terkirim',
+            subject: 'Pelaporan Updated',
         );
     }
 
@@ -50,7 +61,6 @@ class SendMail extends Mailable
     public function content()
     {
         return new Content(
-
         );
     }
 

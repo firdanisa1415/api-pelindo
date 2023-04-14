@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PelaporanUpdated;
+use App\Mail\SendMail;
+use App\Mail\SendMailToPic;
 use Illuminate\Http\Request;
 use App\Models\Pelaporan;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
 
 class PelaporanController extends Controller
 {
@@ -27,53 +30,78 @@ class PelaporanController extends Controller
     public function store(Request $request)
     {
         $input = $request->all();
-        $validator = Validator::make($input, [
-            'judul_pelaporan' => 'required|string',
-            'isi_pelaporan' => 'required|string',
-            'jenis_product' => 'required|string',
-            'pic_pelaporan' => 'required|string',
-            'harapan' => 'required|string',
-            'status' => 'required|string',
-            'file' => 'nullable|file|max:2048',
-        ]);
-        if ($validator->fails()) {
-            return response()->json(['status' => "error", "message" => $validator->errors()], 400);
-        }
-
-        $current = Carbon::now()->toDateTimeString();
-        $trialExpires = Carbon::now()->addDays('3');
+    $validatedData = Validator::make($input, [
+        'judul_pelaporan' => 'required|string',
+        'isi_pelaporan' => 'required|string',
+        'jenis_product' => 'required|string',
+        'harapan' => 'required|string',
+        'status' => 'required|string',
+        // 'klasifikasi' => 'string',
+        'nama_pic' => 'required|string',
         
-        $kode_id = IdGenerator::generate(['table' => 'data_pelaporans', 'field' => 'id_pelaporan', 'length' => 10, 'prefix' => 'BUG-']);
-        $user = Auth::user();
+    ]);
 
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $filename = $file->getClientOriginalName();
-            $fileUrl = $file->storeAs('public', $filename);
+    if ($validatedData->fails()) {
+        return response()->json(['status' => "error", "message" => $validatedData->errors()], 400);
+    }
+
+    // $command = escapeshellcmd("python D:\Tugas\NaiveBayes\modules\bayes.py '{$input['isi_pelaporan']}'");
+    // $output = shell_exec($command);
+    // $output = trim($output);
+
+    // $picPelaporan = Pelaporan::getListPic()->first();
+
+    // if ($picPelaporan) {
+    //     $idPic = $picPelaporan->id_pic;
+    //     $namaPic = $picPelaporan->pic;
+    //     $picEmail = $picPelaporan->email;
+    // } else {
+    //     $idPic =null;
+    //     $namaPic = null;
+    // }
+
+    // $picPelaporan = '';
+
+    // if ($output === 'Software') { 
+    //     $reportCountPic1 = Pelaporan::where('pic_pelaporan', '=', 1)->count();
+    //     $reportCountPic2 = Pelaporan::where('pic_pelaporan', '=', 2)->count();
     
-            $newPelaporan = new Pelaporan();
-        $newPelaporan->id_pelaporan = $kode_id;
-        $newPelaporan->user_id = $user->id;
-        $newPelaporan->judul_pelaporan = $request->judul_pelaporan;
-        $newPelaporan->isi_pelaporan = $request->isi_pelaporan;
-        $newPelaporan->harapan = $request->harapan;
-        $newPelaporan->jenis_product = $request->jenis_product;
-        $newPelaporan->pic_pelaporan = $request->pic_pelaporan;
-        $newPelaporan->tanggal_mulai = $current;
-        $newPelaporan->tanggal_selesai = $trialExpires;
-        $newPelaporan->status = $request->status;
-        $newPelaporan->lampiran = Storage::url($fileUrl);
-        }
-        $newPelaporan->save();
-        //Setiap bentukan data baru response status harus 201
-        Log::info($input);
+    // if ($reportCountPic1 < $reportCountPic2) {
+    //     $picPelaporan = 1;
+    // } else {
+    //     $picPelaporan = 2;
+    // }
+    // }
+    // elseif ($output === 'Hardware') {
+    //     $picPelaporan = 3;
+    // }    
 
-        return response()
-            ->json([
-                'status' => 'success',
-                'data' => $newPelaporan,
-                'file_url' => $newPelaporan->lampiran,
-            ], 201);
+    $current = Carbon::now()->toDateTimeString();
+    $trialExpires = Carbon::now()->addDays('3');
+    $user = Auth::user();
+    $kode_id = IdGenerator::generate(['table' => 'data_pelaporans', 'field' => 'id_pelaporan', 'length' => 10, 'prefix' => 'BUG-']);
+    $newPelaporan = Pelaporan::create([
+        'id_pelaporan' => $kode_id,
+        'user_id' => $user->id,
+        'judul_pelaporan' => $input['judul_pelaporan'],
+        'isi_pelaporan' => $input['isi_pelaporan'],
+        'harapan' => $input['harapan'],
+        'jenis_product' => $input['jenis_product'],
+        'status' => $input['status'],
+        'tanggal_mulai' => $current,
+        'tanggal_selesai' => $trialExpires,
+        'klasifikasi' => $input['klasifikasi'],
+        // 'pic_pelaporan' => $idPic,
+        'nama_pic'=>$input['nama_pic'],
+    ]);
+
+    // Mail::to($user->email)->send(new SendMail($newPelaporan, $user));
+    // Mail::to($picEmail)->send(new SendMailToPic($newPelaporan,$picPelaporan));
+return response()
+->json([
+    'status' => 'success',
+    'data' => $newPelaporan,
+], 201);
     }
 
     public function show($id)
@@ -97,14 +125,13 @@ class PelaporanController extends Controller
 
     public function update(Request $request, $id)
     {
-        $pelaporan = Pelaporan::where('id_pelaporan', $id)->first();
+        $pelaporan = Pelaporan::where('id', $id)->first();
         $input = $request->all();
         if (!$pelaporan) return $this->responseFailed('Data not found', '', 404);
         $validator = Validator::make($input, [
             'judul_pelaporan'      => 'string',
             'isi_pelaporan'      => 'string',
             'jenis_product'      => 'string',
-            'pic_pelaporan' => 'string',
             'harapan'      => 'string',
             'status'     => 'string',
             // 'lampiran'  => 'string'
@@ -114,7 +141,13 @@ class PelaporanController extends Controller
             return response()->json($validator->errors());
         }
         $pelaporan->update($input);
-        $data = Pelaporan::where('id_pelaporan', $id)->first();
+        $data = Pelaporan::where('id', $id)->first();
+
+        if ($data->status == "review") {
+            $picPelaporan = User::find($data->pic_pelaporan);
+            Mail::to($data->user->email)->send(new PelaporanUpdated($data, $picPelaporan));
+        }
+
         return $this->responseSuccess('Pelaporan has been updated', $data, 200);
     }
 
