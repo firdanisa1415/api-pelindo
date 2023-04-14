@@ -36,9 +36,10 @@ class PelaporanController extends Controller
         'jenis_product' => 'required|string',
         'harapan' => 'required|string',
         'status' => 'required|string',
-        // 'klasifikasi' => 'string',
+        'klasifikasi' => 'string',
+        'pic_pelaporan' => 'integer',
         'nama_pic' => 'required|string',
-
+        
     ]);
 
     if ($validatedData->fails()) {
@@ -62,10 +63,10 @@ class PelaporanController extends Controller
 
     // $picPelaporan = '';
 
-    // if ($output === 'Software') {
+    // if ($output === 'Software') { 
     //     $reportCountPic1 = Pelaporan::where('pic_pelaporan', '=', 1)->count();
     //     $reportCountPic2 = Pelaporan::where('pic_pelaporan', '=', 2)->count();
-
+    
     // if ($reportCountPic1 < $reportCountPic2) {
     //     $picPelaporan = 1;
     // } else {
@@ -74,7 +75,7 @@ class PelaporanController extends Controller
     // }
     // elseif ($output === 'Hardware') {
     //     $picPelaporan = 3;
-    // }
+    // }    
 
     $current = Carbon::now()->toDateTimeString();
     $trialExpires = Carbon::now()->addDays('3');
@@ -91,7 +92,7 @@ class PelaporanController extends Controller
         'tanggal_mulai' => $current,
         'tanggal_selesai' => $trialExpires,
         'klasifikasi' => $input['klasifikasi'],
-        // 'pic_pelaporan' => $idPic,
+        'pic_pelaporan' => $input['pic_pelaporan'],
         'nama_pic'=>$input['nama_pic'],
     ]);
 
@@ -132,7 +133,6 @@ return response()
             'judul_pelaporan'      => 'string',
             'isi_pelaporan'      => 'string',
             'jenis_product'      => 'string',
-            'pic_pelaporan' => 'string',
             'harapan'      => 'string',
             'status'     => 'string',
             // 'lampiran'  => 'string'
