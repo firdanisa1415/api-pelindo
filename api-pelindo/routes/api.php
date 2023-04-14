@@ -102,6 +102,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::controller(AuthenticationController::class)->group(function () {
         Route::get('user', 'index');
         Route::post('logout', 'logout');
+        Route::get('role', 'roles');
         Route::put('user/{id}', 'update');
     });
     Route::controller(PelaporanController::class)->group(function () {
@@ -143,47 +144,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::put('sprint/{id}', 'update');
         Route::delete('sprint/{id}', 'destroy');
     });
-    Route::group(['middleware' => ['role:operator|manager']], function () {
-        Route::controller(AuthenticationController::class)->group(function () {
-            // Route::get('user', 'index');
-            Route::get('user', 'index');
-            Route::post('logout', 'logout');
-            Route::get('role', 'roles');
-        });
-    });
 });
 Route::group(['middleware' => ['role:karyawan']], function () {
-    Route::controller(AuthenticationController::class)->group(function () {
-        // Route::get('user', 'index');
-        Route::get('user', 'index');
-        Route::post('logout', 'logout');
-        Route::get('role', 'roles');
-    });
-
-    Route::controller(TugasController::class)->group(function () {
-        Route::get('tugas', 'index');
-        Route::post('tugas', 'store');
-        Route::get('tugas/{id}', 'show');
-        Route::put('tugas/{id}', 'update');
-        Route::delete('tugas/{id}', 'destroy');
-    });
-});
-Route::group(['middleware' => ['role:karyawan']], function () {
-    Route::controller(AuthenticationController::class)->group(function () {
-        // Route::get('user', 'index');
-        Route::get('user', 'index');
-        Route::post('logout', 'logout');
-        Route::get('role', 'roles');
-    });
-
-});
-Route::group(['middleware' => ['role:karyawan']], function () {
-    Route::controller(AuthenticationController::class)->group(function () {
-        // Route::get('user', 'index');
-        Route::get('user', 'index');
-        Route::post('logout', 'logout');
-        Route::get('role', 'roles');
-    });
     Route::controller(TugasController::class)->group(function () {
         Route::get('tugas', 'index');
         Route::post('tugas', 'store');
