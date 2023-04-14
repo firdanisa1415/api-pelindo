@@ -36,7 +36,8 @@ class PelaporanController extends Controller
         'jenis_product' => 'required|string',
         'harapan' => 'required|string',
         'status' => 'required|string',
-        // 'klasifikasi' => 'string',
+        'klasifikasi' => 'string',
+        'pic_pelaporan' => 'string',
         'nama_pic' => 'required|string',
         
     ]);
