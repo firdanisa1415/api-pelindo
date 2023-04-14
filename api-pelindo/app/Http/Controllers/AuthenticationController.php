@@ -91,19 +91,17 @@ class AuthenticationController extends Controller
             'email' => $input['email'],
             'nrp' => $input['nrp'],
             'divisi_id' => $input['divisi_id'],
-            'role_id' => $input['role_id'] ?? 1,
             'password' => bcrypt($input['password']),
         ]);
         /**
          * @enum karyawan | operator | manager
          */
 
-        if (!empty($input['role_id'])) {
-            $user->assignRole($input['role_id']);
+        if (!empty($input['role'])) {
+            $user->assignRole($input['role']);
         } else {
             $user->assignRole('karyawan');
         }
-
         $token = $user->createToken('token')->plainTextToken;
         $data = [
             'user' => User::where('id', $user->id)->with('roles')->first(),
