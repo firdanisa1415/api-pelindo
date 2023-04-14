@@ -12,9 +12,9 @@ use Haruncpi\LaravelIdGenerator\IdGenerator;
 
 class StoryController extends Controller
 {
-    public function index()
+    public function index($epic_id)
     {
-        $data_story = Story::with('sprint')->get();
+        $data_story = Story::where('epic_id', $epic_id)->with('task')->get();
         return response()
             ->json([
                 'status' => 'Success',
@@ -22,13 +22,22 @@ class StoryController extends Controller
             ], 200);
     }
 
-    public function store(Request $request)
+    public function allStory()
+    {
+        $data_story = Story::with('sprint', 'task')->get();
+        return response()
+            ->json([
+                'status' => 'Success',
+                'data' => $data_story,
+            ], 200);
+    }
+
+    public function store(Request $request, $epic_id)
     {
         $validator = Validator::make($request->all(), [
-            'epic_id'      => 'required|string',
-            'sprint_id'      => 'required|string',
+            // 'sprint_id'      => 'string',
             'isi_story'      => 'required|string',
-            'status'        => 'required|string',
+            // 'status'        => 'string',
         ]);
 
         if ($validator->fails()) {
@@ -36,24 +45,7 @@ class StoryController extends Controller
         }
 
         $kode_id = IdGenerator::generate(['table' => 'data_story', 'field' => 'id_story', 'length' => 10, 'prefix' => 'STR-']);
-
-        $epicId = $request->input('epic_id');
-        $dataEpic = Epics::find($epicId);
-        if (!$dataEpic) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Data epic not found!'
-            ], 404);
-        };
-        $sprintId = $request->input('sprint_id');
-        $dataSprint = Sprint::find($sprintId);
-        if (!$dataSprint) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Data sprint not found!'
-            ], 404);
-        };
-
+        $epic = Epics::where('id_epic', $epic_id)->first();
         $data_story = new Story();
         $data_story->id_story = $kode_id;
         $data_story->epic_id = $request->epic_id;

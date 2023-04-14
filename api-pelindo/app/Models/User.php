@@ -46,4 +46,16 @@ class User extends Authenticatable
      *
      * @var array<string, string>
      */
+    public function divisi(){
+        return $this->belongsTo(Divisi::class,'divisi_id','id');
+    }
+    public function pelaporan(){
+        return $this->hasMany(Pelaporan::class,'user_id');
+    }
+    public function epics(){
+        return $this->hasMany(Epics::class,'user_id');
+    }
+    public function sprint(){
+        return $this->hasMany(Sprint::class,'user_id');
+    }
 }
