@@ -36,9 +36,6 @@ class PelaporanController extends Controller
         'jenis_product' => 'required|string',
         'harapan' => 'required|string',
         'status' => 'required|string',
-        'klasifikasi' => 'string',
-        'pic_pelaporan' => 'string',
-        'nama_pic' => 'required|string',
         
     ]);
 
@@ -46,20 +43,20 @@ class PelaporanController extends Controller
         return response()->json(['status' => "error", "message" => $validatedData->errors()], 400);
     }
 
-    // $command = escapeshellcmd("python D:\Tugas\NaiveBayes\modules\bayes.py '{$input['isi_pelaporan']}'");
-    // $output = shell_exec($command);
-    // $output = trim($output);
+    $command = escapeshellcmd("python D:\Tugas\NaiveBayes\modules\bayes.py '{$input['isi_pelaporan']}'");
+    $output = shell_exec($command);
+    $output = trim($output);
 
-    // $picPelaporan = Pelaporan::getListPic()->first();
+    $picPelaporan = Pelaporan::getListPic()->first();
 
-    // if ($picPelaporan) {
-    //     $idPic = $picPelaporan->id_pic;
-    //     $namaPic = $picPelaporan->pic;
-    //     $picEmail = $picPelaporan->email;
-    // } else {
-    //     $idPic =null;
-    //     $namaPic = null;
-    // }
+    if ($picPelaporan) {
+        $idPic = $picPelaporan->id_pic;
+        $namaPic = $picPelaporan->pic;
+        $picEmail = $picPelaporan->email;
+    } else {
+        $idPic =null;
+        $namaPic = null;
+    }
 
     // $picPelaporan = '';
 
@@ -91,13 +88,13 @@ class PelaporanController extends Controller
         'status' => $input['status'],
         'tanggal_mulai' => $current,
         'tanggal_selesai' => $trialExpires,
-        'klasifikasi' => $input['klasifikasi'],
-        // 'pic_pelaporan' => $idPic,
-        'nama_pic'=>$input['nama_pic'],
+        'klasifikasi' => $output,
+        'pic_pelaporan' => $idPic,
+        'nama_pic'=>$namaPic,
     ]);
 
-    // Mail::to($user->email)->send(new SendMail($newPelaporan, $user));
-    // Mail::to($picEmail)->send(new SendMailToPic($newPelaporan,$picPelaporan));
+    Mail::to($user->email)->send(new SendMail($newPelaporan, $user));
+    Mail::to($picEmail)->send(new SendMailToPic($newPelaporan,$picPelaporan));
 return response()
 ->json([
     'status' => 'success',
