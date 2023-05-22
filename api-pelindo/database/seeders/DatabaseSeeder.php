@@ -5,6 +5,8 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Database\Seeders\RolesSeeder;
+use Database\Seeders\UsersSeeder;
+use Database\Seeders\DivisiSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -29,6 +31,9 @@ class DatabaseSeeder extends Seeder
         //     'tanggal_selesai' => "test",
         //     'jenis_product' => "test",
         // ]);
+        $this->call(DivisiSeeder::class);
         $this->call(RolesSeeder::class);
+        $this->call(UsersSeeder::class);
+
     }
 }
