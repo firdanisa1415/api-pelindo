@@ -100,6 +100,7 @@ Route::controller(GuestController::class)->group(function(){
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::controller(AuthenticationController::class)->group(function () {
         Route::get('user', 'index');
+        Route::get('user/{id}', 'show');
         Route::post('logout', 'logout');
         Route::put('user/{id}', 'update');
     });

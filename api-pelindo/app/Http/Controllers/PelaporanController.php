@@ -36,7 +36,11 @@ class PelaporanController extends Controller
         'jenis_product' => 'required|string',
         'harapan' => 'required|string',
         'status' => 'required|string',
-        
+        // 'klasifikasi' => 'string',
+        // 'pic_pelaporan' => 'integer',
+        // 'nama_pic' => 'string',
+        // 'tanggal_mulai' => 'string',
+        // 'tanggal_selesai' => 'string'
     ]);
 
     if ($validatedData->fails()) {
@@ -52,7 +56,7 @@ class PelaporanController extends Controller
     if ($picPelaporan) {
         $idPic = $picPelaporan->id_pic;
         $namaPic = $picPelaporan->pic;
-        $picEmail = $picPelaporan->email;
+        // $picEmail = $picPelaporan->email;
     } else {
         $idPic =null;
         $namaPic = null;
@@ -91,10 +95,15 @@ class PelaporanController extends Controller
         'klasifikasi' => $output,
         'pic_pelaporan' => $idPic,
         'nama_pic'=>$namaPic,
+        // 'klasifikasi' => $input['klasifikasi'],
+        // 'pic_pelaporan' => $input['pic_pelaporan'],
+        // 'nama_pic'=>$input['nama_pic'],
+        // 'tanggal_mulai' => $input['tanggal_mulai'],
+        // 'tanggal_selesai' => $input['tanggal_selesai'],
     ]);
 
     Mail::to($user->email)->send(new SendMail($newPelaporan, $user));
-    Mail::to($picEmail)->send(new SendMailToPic($newPelaporan,$picPelaporan));
+    // Mail::to($picEmail)->send(new SendMailToPic($newPelaporan,$picPelaporan));
 return response()
 ->json([
     'status' => 'success',

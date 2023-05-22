@@ -38,7 +38,7 @@ class Pelaporan extends Model
             ->join('users as cc', 'cc.id', '=', 'aa.user_id')
             ->whereNotNull('aa.pic_pelaporan')
             ->whereNotNull('bb.id')
-            ->whereIn('aa.klasifikasi', ['Hardware', 'Software'])
+            ->whereIn('aa.klasifikasi', ['Informasi', 'Aplikasi', 'Infrastruktur', 'People'])
             ->groupBy('aa.pic_pelaporan', 'bb.id', 'bb.email', 'cc.nama_karyawan', 'cc.email')
             ->orderBy('jumlah', 'asc')
             ->limit(1);

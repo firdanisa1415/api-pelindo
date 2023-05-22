@@ -154,51 +154,25 @@ class AuthenticationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function show($id)
     {
-        //
+        // dd(Data_Pelaporan::find($id));
+        $data_user = User::find($id);
+        if (!$data_user) {
+            return response()
+                ->json([
+                    'status' => 'Error',
+                    'message' => 'Data Not Found!',
+                ], 404);
+        }
+
+        return response()
+            ->json([
+                'status' => 'Success',
+                'data' => $data_user,
+            ], 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function show(User $user)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(User $user)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
