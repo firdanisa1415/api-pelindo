@@ -22,7 +22,9 @@ class SprintController extends Controller
 
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $input =$request->all();
+        $validator = Validator::make($input, [
+            
         ]);
 
         if ($validator->fails()) {
@@ -36,9 +38,9 @@ class SprintController extends Controller
 
         $data_sprint = new Sprint();
         $data_sprint->id_sprint = $kode_id;
-        $data_sprint->nama_sprint = $request->nama_sprint;
-        $data_sprint->tanggal_mulai = $current;
-        $data_sprint->tanggal_akhir = $trialExpires;
+        $data_sprint->user_id = $user->id;
+        $data_sprint->tanggal_mulai = $request->tanggal_mulai;
+        $data_sprint->tanggal_akhir = $request->tanggal_akhir;
         $data_sprint->save();
         return response()
             ->json([
