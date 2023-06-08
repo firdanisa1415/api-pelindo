@@ -147,6 +147,37 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::put('sprint/{id}', 'update');
         Route::delete('sprint/{id}', 'destroy');
     });
+    Route::controller(EpicsController::class)->group(function () {
+        Route::get('epic', 'index');
+        Route::post('epic', 'store');
+        Route::get('epic/{id}', 'show');
+        Route::put('epic/{id}', 'update');
+        Route::delete('epic/{id}', 'destroy');
+    });
+
+    Route::controller(StoryController::class)->group(function () {
+        Route::get('story', 'index');
+        Route::post('story', 'store');
+        Route::get('story/{id}', 'show');
+        Route::put('story/{id}', 'update');
+        Route::delete('story/{id}', 'destroy');
+    });
+
+    Route::controller(TugasController::class)->group(function () {
+        Route::get('tugas', 'index');
+        Route::post('tugas', 'store');
+        Route::get('tugas/{id}', 'show');
+        Route::put('tugas/{id}', 'update');
+        Route::delete('tugas/{id}', 'destroy');
+    });
+
+    Route::controller(SprintController::class)->group(function () {
+        Route::get('sprint', 'index');
+        Route::post('sprint', 'store');
+        Route::get('sprint/{id}', 'show');
+        Route::put('sprint/{id}', 'update');
+        Route::delete('sprint/{id}', 'destroy');
+    });
     Route::group(['middleware' => ['role:operator|manager']], function () {
         Route::controller(AuthenticationController::class)->group(function () {
             // Route::get('user', 'index');

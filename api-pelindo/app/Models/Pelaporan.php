@@ -26,7 +26,7 @@ class Pelaporan extends Model
         'tanggal_mulai',
         'tanggal_selesai'
     ];
-    
+
     public function user(){
         return $this->belongsTo(User::class,'user_id','id');
     }
@@ -42,14 +42,14 @@ class Pelaporan extends Model
             ->groupBy('aa.pic_pelaporan', 'bb.id', 'bb.email', 'cc.nama_karyawan', 'cc.email')
             ->orderBy('jumlah', 'asc')
             ->limit(1);
-    
+
         $results = DB::table(DB::raw('(' . $subquery->toSql() . ') as insiden'))
             ->select('insiden.id_pic', 'bb.nama_karyawan as pic','bb.email', 'insiden.jumlah', 'insiden.pelapor', 'insiden.mailpelapor')
             ->leftJoin('users as bb', 'bb.id', '=', 'insiden.id_pic')
             ->mergeBindings($subquery)
             ->get();
-    
+
         return $results;
-    }    
-    
+    }
+
 }

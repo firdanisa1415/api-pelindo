@@ -45,6 +45,6 @@ class DivisiSeeder extends Seeder
         ];
 
         Divisi::insert($divisi);
-        
+
     }
 }

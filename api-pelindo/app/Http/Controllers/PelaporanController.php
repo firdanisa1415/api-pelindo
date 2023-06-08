@@ -66,10 +66,10 @@ class PelaporanController extends Controller
 
     // $picPelaporan = '';
 
-    // if ($output === 'Software') { 
+    // if ($output === 'Software') {
     //     $reportCountPic1 = Pelaporan::where('pic_pelaporan', '=', 1)->count();
     //     $reportCountPic2 = Pelaporan::where('pic_pelaporan', '=', 2)->count();
-    
+
     // if ($reportCountPic1 < $reportCountPic2) {
     //     $picPelaporan = 1;
     // } else {
@@ -78,7 +78,7 @@ class PelaporanController extends Controller
     // }
     // elseif ($output === 'Hardware') {
     //     $picPelaporan = 3;
-    // }    
+    // }
 
     $current = Carbon::now()->toDateTimeString();
     $trialExpires = Carbon::now()->addDays('3');
@@ -141,6 +141,7 @@ return response()
             'judul_pelaporan'      => 'string',
             'isi_pelaporan'      => 'string',
             'jenis_product'      => 'string',
+            'pic_pelaporan' => 'string',
             'harapan'      => 'string',
             'status'     => 'string',
             // 'lampiran'  => 'string'
@@ -170,7 +171,7 @@ return response()
 
     public function monthly()
     {
-        $bulan = Pelaporan::select(DB::raw("CASE 
+        $bulan = Pelaporan::select(DB::raw("CASE
                                             WHEN extract(month from tanggal_selesai::date) = 1 THEN 'Januari'
                                             WHEN extract(month from tanggal_selesai::date) = 2 THEN 'Februari'
                                             WHEN extract(month from tanggal_selesai::date) = 3 THEN 'Maret'
@@ -219,14 +220,14 @@ return response()
         return response()->json($hasilAkhir);
     }
 
-    
+
 
     public function product(){
         $laporanPerProduk = Pelaporan::select('jenis_product', DB::raw('count(*) as total_users'))
             ->groupBy('jenis_product')
             ->get();
 
-        return response()->json($laporanPerProduk); 
+        return response()->json($laporanPerProduk);
     }
 
     public function status(){
@@ -234,13 +235,13 @@ return response()
             ->groupBy('status')
             ->get();
 
-        return response()->json($laporanPerProduk); 
+        return response()->json($laporanPerProduk);
     }
     public function pic(){
         $laporanPerProduk = Pelaporan::select('nama_pic', DB::raw('count(*) as total_users'))
             ->groupBy('nama_pic')
             ->get();
 
-        return response()->json($laporanPerProduk); 
+        return response()->json($laporanPerProduk);
     }
 }
