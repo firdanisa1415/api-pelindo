@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
         //     'jenis_product' => "test",
         // ]);
         $this->call(RolesSeeder::class);
+        $this->call(DivisiSeeder::class);
         $this->call(UsersSeeder::class);
 
     }
