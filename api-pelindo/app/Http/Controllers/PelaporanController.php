@@ -12,6 +12,8 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 
 class PelaporanController extends Controller
@@ -164,5 +166,81 @@ return response()
         if (!$pelaporan) return $this->responseFailed('Data not found', '', 404);
         $pelaporan->delete();
         return $this->responseSuccess('Data has been deleted');
+    }
+
+    public function monthly()
+    {
+        $bulan = Pelaporan::select(DB::raw("CASE 
+                                            WHEN extract(month from tanggal_selesai::date) = 1 THEN 'Januari'
+                                            WHEN extract(month from tanggal_selesai::date) = 2 THEN 'Februari'
+                                            WHEN extract(month from tanggal_selesai::date) = 3 THEN 'Maret'
+                                            WHEN extract(month from tanggal_selesai::date) = 4 THEN 'April'
+                                            WHEN extract(month from tanggal_selesai::date) = 5 THEN 'Mei'
+                                            WHEN extract(month from tanggal_selesai::date) = 6 THEN 'Juni'
+                                            WHEN extract(month from tanggal_selesai::date) = 7 THEN 'Juli'
+                                            WHEN extract(month from tanggal_selesai::date) = 8 THEN 'Agustus'
+                                            WHEN extract(month from tanggal_selesai::date) = 9 THEN 'September'
+                                            WHEN extract(month from tanggal_selesai::date) = 10 THEN 'Oktober'
+                                            WHEN extract(month from tanggal_selesai::date) = 11 THEN 'November'
+                                            WHEN extract(month from tanggal_selesai::date) = 12 THEN 'Desember'
+                                            ELSE ''
+                                        END as month"), DB::raw('count(*) as total_users'))
+            ->groupBy(DB::raw('extract(month from tanggal_selesai::date)'))
+            ->get();
+        $data = $bulan;
+        $bulanIndonesia = [
+            'Januari',
+            'Februari',
+            'Maret',
+            'April',
+            'Mei',
+            'Juni',
+            'Juli',
+            'Agustus',
+            'September',
+            'Oktober',
+            'November',
+            'Desember'
+        ];
+        $hasilDiurutkan = [];
+        foreach ($data as $item) {
+            $bulan = $item->month;
+            $totalUsers = $item->total_users;
+            $index = array_search($bulan, $bulanIndonesia);
+            if ($index !== false) {
+                $hasilDiurutkan[$index] = [
+                    'bulan' => $bulan,
+                    'total_users' => $totalUsers
+                ];
+            }
+        }
+        ksort($hasilDiurutkan);
+        $hasilAkhir = array_values($hasilDiurutkan);
+        return response()->json($hasilAkhir);
+    }
+
+    
+
+    public function product(){
+        $laporanPerProduk = Pelaporan::select('jenis_product', DB::raw('count(*) as total_users'))
+            ->groupBy('jenis_product')
+            ->get();
+
+        return response()->json($laporanPerProduk); 
+    }
+
+    public function status(){
+        $laporanPerProduk = Pelaporan::select('status', DB::raw('count(*) as total_users'))
+            ->groupBy('status')
+            ->get();
+
+        return response()->json($laporanPerProduk); 
+    }
+    public function pic(){
+        $laporanPerProduk = Pelaporan::select('nama_pic', DB::raw('count(*) as total_users'))
+            ->groupBy('nama_pic')
+            ->get();
+
+        return response()->json($laporanPerProduk); 
     }
 }

@@ -110,6 +110,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('pelaporan/{id}', 'show');
         Route::put('pelaporan/{id}', 'update');
         Route::delete('pelaporan/{id}', 'destroy');
+        Route::get('product', 'product');
+        Route::get('bulan', 'monthly');
+        Route::get('status', 'status');
+        Route::get('pic', 'pic');
     });
     Route::controller(EpicsController::class)->group(function () {
         Route::get('epic', 'index');
