@@ -14,33 +14,37 @@ class DivisiSeeder extends Seeder
      */
     public function run()
     {
-        Divisi::create([
-            'nama_divisi' => 'Divisi Sumber Daya dan Umum'
-        ]);
-        Divisi::create([
-            'nama_divisi' => 'Divisi Operasional dan HSSE'
-        ]);
-        Divisi::create([
-            'nama_divisi' => 'Biro Satuan Pengawas Internal'
-        ]);
-        Divisi::create([
-            'nama_divisi' => 'Divisi Komersial dan Pemasaran'
-        ]);
-        Divisi::create([
-            'nama_divisi' => 'Divisi Asesmen, Pelatihan, dan Konsultasi'
-        ]);
-        Divisi::create([
-            'nama_divisi' => 'Pengadaan Barang dan Jasa'
-        ]);
-        Divisi::create([
-            'nama_divisi' => 'Divisi Teknologi dan Informasi'
-        ]);
-        Divisi::create([
-            'nama_divisi' => 'Divisi Keuangan'
-        ]);
-        Divisi::create([
-            'nama_divisi' => 'Biro Hukum dan Sekretaris Perusahaan'
-        ]);
-        
+        $divisi = [
+            [
+                'nama_divisi' => 'Divisi Sumber Daya dan Umum',
+            ],
+            [
+                'nama_divisi' => 'Divisi Operasional dan HSSE',
+            ],
+            [
+                'nama_divisi' => 'Biro Satuan Pengawas Internal',
+            ],
+            [
+                'nama_divisi' => 'Divisi Komersial dan Pemasaran',
+            ],
+            [
+                'nama_divisi' => 'Divisi Asesmen, Pelatihan, dan Konsultasi',
+            ],
+            [
+                'nama_divisi' => 'Pengadaan Barang dan Jasa',
+            ],
+            [
+                'nama_divisi' => 'Divisi Teknologi dan Informasi',
+            ],
+            [
+                'nama_divisi' => 'Divisi Keuangan',
+            ],
+            [
+                'nama_divisi' => 'Biro Hukum dan Sekretaris Perusahaan',
+            ],
+        ];
+
+        Divisi::insert($divisi);
+
     }
 }

@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -50,5 +51,14 @@ class User extends Authenticatable
      */
     public function divisi(){
         return $this->belongsTo(Divisi::class,'divisi_id','id');
+    }
+    public function pelaporan(){
+        return $this->hasMany(Pelaporan::class,'user_id');
+    }
+    public function epics(){
+        return $this->hasMany(Epics::class,'user_id');
+    }
+    public function sprint(){
+        return $this->hasMany(Sprint::class,'user_id');
     }
 }

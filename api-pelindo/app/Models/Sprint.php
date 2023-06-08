@@ -9,7 +9,7 @@ class Sprint extends Model
 {
     use HasFactory;
     protected $table = 'data_sprint';
-    protected $fillable = ['id_sprint', 'nama_sprint', 'tanggal_mulai', 'tanggal_akhir'];
+    protected $fillable = ['id_sprint', 'nama_sprint', 'tanggal_mulai', 'tanggal_akhir', 'user_id'];
 
     const CREATED_AT = 'tanggal_mulai';
     const UPDATED_AT = 'tanggal_akhir';
@@ -29,5 +29,8 @@ class Sprint extends Model
     public function stories()
     {
         return $this->hasMany(Story::class, 'sprint_id');
+    }
+    public function user(){
+        return $this->belongsTo(User::class,'user_id','id');
     }
 }

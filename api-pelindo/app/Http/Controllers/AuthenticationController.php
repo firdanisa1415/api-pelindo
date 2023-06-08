@@ -175,7 +175,31 @@ class AuthenticationController extends Controller
 
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'nama_karyawan' => 'string|unique:users,nama_karyawan',
+            'nrp' => 'integer',
+            'divisi_id' => 'string',
+            'email' => 'string|unique:users,email',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
+        }
+
+        $data_user = User::find($id);
+        if (!$data_user) {
+            return response()->json([
+                'status' => 'Error',
+                'message' => 'Data not found!'
+            ], 404);
+        };
+
+        $data_user->fill($request->all());
+        $data_user->save();
+        return response()->json([
+            'status' => 'Success',
+            'data' => $data_user,
+        ], 200);
     }
 
     /**
