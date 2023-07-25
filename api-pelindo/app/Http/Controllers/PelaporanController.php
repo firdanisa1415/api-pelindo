@@ -49,7 +49,7 @@ class PelaporanController extends Controller
         return response()->json(['status' => "error", "message" => $validatedData->errors()], 400);
     }
 
-    $command = escapeshellcmd("python D:\Tugas\NaiveBayes\modules\bayes.py '{$input['isi_pelaporan']}'");
+    $command = escapeshellcmd("python D:\Tugas\NaiveBayes\modules\connection.py '{$input['isi_pelaporan']}'");
     $output = shell_exec($command);
     $output = trim($output);
 
